@@ -1,4 +1,4 @@
-package com.maciek.warcraftstatstracker;
+package com.maciek.warcraftstatstracker.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

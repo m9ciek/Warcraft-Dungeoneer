@@ -1,4 +1,4 @@
-package com.maciek.warcraftstatstracker;
+package com.maciek.warcraftstatstracker.config;
 
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/data").authenticated()
+                .antMatchers("/api/**").authenticated()
                 .anyRequest().permitAll();
     }
 }
