@@ -1,9 +1,10 @@
-package com.maciek.warcraftstatstracker;
+package com.maciek.warcraftstatstracker.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.maciek.warcraftstatstracker.model.*;
 import com.maciek.warcraftstatstracker.model.Character;
-import com.maciek.warcraftstatstracker.model.User;
-import com.maciek.warcraftstatstracker.model.WowAccount;
-import com.maciek.warcraftstatstracker.model.WowProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -47,11 +48,40 @@ public class TrackerController {
         ResponseEntity<WowProfile> response = requestBlizzardApi("https://eu.api.blizzard.com/profile/user/wow?namespace=profile-eu&locale=en_EU",
                 HttpMethod.GET, WowProfile.class, oAuth2Authentication);
         WowAccount wowAccount = response.getBody().getWowAccounts().stream().findFirst().get();
+
         List<Character> foundCharacters = wowAccount.getCharacters().stream()
                 .filter(e -> e.getName().equals(capitalize(name)))
                 .collect(Collectors.toList());
 
         return foundCharacters;
+    }
+
+    @GetMapping("/a/{name}")
+    public String getNode(@PathVariable String name, OAuth2Authentication oAuth2Authentication) {
+        ResponseEntity<WowProfile> response = requestBlizzardApi("https://eu.api.blizzard.com/profile/user/wow?namespace=profile-eu&locale=en_EU",
+                HttpMethod.GET, WowProfile.class, oAuth2Authentication);
+
+        WowAccount wowAccount = response.getBody().getWowAccounts().stream().findFirst().get();
+
+        List<Character> foundCharacters = wowAccount.getCharacters().stream()
+                .filter(e -> e.getName().equals(capitalize(name)))
+                .collect(Collectors.toList());
+
+        ResponseEntity<String> request = requestBlizzardApi(foundCharacters.get(0).getCharacterDetails().getUrl() + "&locale=en_us",
+                HttpMethod.GET, String.class, oAuth2Authentication);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode node = null;
+        try {
+            node = objectMapper.readValue(request.getBody(), JsonNode.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        JsonNode child = node.get("realm");
+        JsonNode childField = child.get("name");
+        String field = childField.asText();
+        return field;
     }
 
     private <T> ResponseEntity<T> requestBlizzardApi(String url, HttpMethod httpMethod, Class<T> responseType, OAuth2Authentication oAuth2Authentication) {
