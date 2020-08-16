@@ -16,10 +16,10 @@ public class BlizzardApiService {
 
     private final Logger logger = LoggerFactory.getLogger(BlizzardApiService.class);
 
-    public <T> ResponseEntity<T> requestBlizzardApi(String url, HttpMethod httpMethod, Class<T> responseType, OAuth2Authentication oAuth2Authentication) {
+    public <T> ResponseEntity<T> getRequestBlizzardApi(String url, Class<T> responseType, OAuth2Authentication oAuth2Authentication) {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity httpEntity = addAuthorizationHeader(oAuth2Authentication);
-        return restTemplate.exchange(url, httpMethod, httpEntity, responseType);
+        return restTemplate.exchange(url, HttpMethod.GET, httpEntity, responseType);
     }
 
     private HttpEntity addAuthorizationHeader(OAuth2Authentication details) {
