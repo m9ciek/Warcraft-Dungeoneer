@@ -1,9 +1,6 @@
 package com.maciek.warcraftstatstracker.model;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 
 @Data
@@ -18,6 +15,7 @@ public class Character {
     private String name;
     @JsonAlias({"character"})
     private CharacterDetails characterDetails;
+
 
     @JsonGetter("character-details")
     public CharacterDetails getCharacterDetails() {

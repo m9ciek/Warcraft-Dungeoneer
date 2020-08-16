@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class TrackerService {
+public class UserTrackerService {
 
     //Returns characters with provided name from different realms - if exists
     public List<Character> getCharactersForWowProfile(WowProfile wowProfile, String characterName) {
