@@ -8,7 +8,8 @@ import java.sql.Timestamp;
 
 public class CharacterDetailsMapper {
 
-    public static CharacterDetails mapJSONToCharacterDetails(String dataJSON, CharacterDetails characterDetails) {
+    public static CharacterDetails mapJSONToCharacterDetails(String dataJSON) {
+        CharacterDetails characterDetails = new CharacterDetails();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode node;
         try {
@@ -24,6 +25,11 @@ public class CharacterDetailsMapper {
         JsonNode child = node.get("realm");
         JsonNode childField = child.get("name");
         characterDetails.setRealm(childField.asText());
+
+        child = node.get("_links");
+        childField = child.get("self");
+        child = childField.get("href");
+        characterDetails.setUrl(child.asText());
 
         child = node.get("character_class");
         childField = child.get("name");

@@ -19,8 +19,7 @@ public class CharacterService {
         character.setId(node.get("id").asLong());
         character.setName(node.get("name").asText());
 
-        CharacterDetails characterDetails = new CharacterDetails();
-        CharacterDetailsMapper.mapJSONToCharacterDetails(apiRequest, characterDetails);
+        CharacterDetails characterDetails = CharacterDetailsMapper.mapJSONToCharacterDetails(apiRequest);
         character.setCharacterDetails(characterDetails);
         return character;
     }
