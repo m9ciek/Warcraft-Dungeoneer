@@ -2,41 +2,53 @@ package com.maciek.warcraftstatstracker.mapper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.maciek.warcraftstatstracker.model.Character;
 import com.maciek.warcraftstatstracker.model.CharacterDetails;
 
 import java.sql.Timestamp;
 
-public class CharacterDetailsMapper {
+public class CharacterMapper {
 
-    public static CharacterDetails mapJSONToCharacterDetails(String dataJSON) {
-        CharacterDetails characterDetails = new CharacterDetails();
+    public static Character mapJSONToCharacter(String dataJSON) {
+        Character character = new Character();
+        CharacterDetails details = new CharacterDetails();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode node;
         try {
             node = objectMapper.readValue(dataJSON, JsonNode.class);
-            populateDetails(node, characterDetails);
+            populateCharacter(node, character);
+            populateCharacterDetails(node, details);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return characterDetails;
+        character.setCharacterDetails(details);
+        return character;
     }
 
-    private static void populateDetails(JsonNode node, CharacterDetails characterDetails) {
+    private static void populateCharacter(JsonNode node, Character character) {
         JsonNode child = node.get("realm");
         JsonNode childField = child.get("name");
-        characterDetails.setRealm(childField.asText());
+        character.setRealm(childField.asText());
+
+        child = node.get("name");
+        character.setName(child.asText());
+
+        child = node.get("id");
+        character.setId(child.asLong());
 
         child = node.get("_links");
         childField = child.get("self");
         child = childField.get("href");
-        characterDetails.setUrl(child.asText());
+        character.setUrl(child.asText());
 
         child = node.get("character_class");
         childField = child.get("name");
-        characterDetails.setCharacterClass(childField.asText());
+        character.setCharacterClass(childField.asText());
+    }
 
-        child = node.get("race");
-        childField = child.get("name");
+    private static void populateCharacterDetails(JsonNode node, CharacterDetails characterDetails) {
+        JsonNode child = node.get("race");
+        JsonNode childField = child.get("name");
         characterDetails.setRace(childField.asText());
 
         child = node.get("faction");
@@ -58,7 +70,7 @@ public class CharacterDetailsMapper {
 
         //In case of not guild field provided
         child = node.get("guild");
-        if(child != null){
+        if (child != null) {
             childField = child.get("name");
             characterDetails.setGuild(childField.asText());
         }
