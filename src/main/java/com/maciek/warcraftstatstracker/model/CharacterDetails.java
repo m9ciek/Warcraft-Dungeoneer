@@ -30,4 +30,5 @@ public class CharacterDetails {
     @JsonProperty("last-login")
     private LocalDateTime lastLogin;
 
+
 }
