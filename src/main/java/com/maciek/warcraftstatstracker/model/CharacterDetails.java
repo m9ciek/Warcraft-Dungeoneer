@@ -1,13 +1,11 @@
 package com.maciek.warcraftstatstracker.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class CharacterDetails {
 
     private int level;
@@ -24,5 +22,6 @@ public class CharacterDetails {
     @JsonProperty("last-login")
     private LocalDateTime lastLogin;
 
-
+    @JsonProperty("raiderIO-stats")
+    private RaiderIOStats raiderIOStats;
 }

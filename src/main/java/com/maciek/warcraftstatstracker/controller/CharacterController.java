@@ -26,16 +26,16 @@ public class CharacterController {
     @GetMapping("/character/{name}")
     public ResponseEntity<Character> getCharacter(@PathVariable String name, @RequestParam String realm, OAuth2Authentication oAuth2Authentication) throws JsonProcessingException {
         String realmCorrected = realm.toLowerCase().trim().replace(" ", "-"); //ex. Tarren Mill -> tarren-mill
-        ResponseEntity<String> response;
+        ResponseEntity<String> blizzardApiResponse;
         try {
-            response = blizzardApiService
+            blizzardApiResponse = blizzardApiService
                     .getRequestBlizzardApi("https://eu.api.blizzard.com/profile/wow/character/" + realmCorrected + "/" + name.toLowerCase() + "?namespace=profile-eu&locale=en_US",
                             String.class, oAuth2Authentication);
         } catch (HttpClientErrorException e) {
             return ResponseEntity.notFound().build();
         }
 
-        Character character = characterService.getCharacterFromApi(response.getBody());
+        Character character = characterService.getCharacterFromApi(blizzardApiResponse.getBody());
         return ResponseEntity.ok(character);
     }
 }

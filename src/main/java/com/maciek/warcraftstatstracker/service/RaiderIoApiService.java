@@ -18,7 +18,7 @@ public class RaiderIoApiService {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("accept", "application/json");
         HttpEntity httpEntity = new HttpEntity(httpHeaders);
-        ResponseEntity<String> response = restTemplate.exchange("https://raider.io/api/v1/characters/profile?region=eu&realm=" + realm + "&name=" + characterName + "&fields=mythic_plus_scores_by_season%3Acurrent%2Cmythic_plus_ranks%2Cmythic_plus_best_runs",
+        ResponseEntity<String> response = restTemplate.exchange("https://raider.io/api/v1/characters/profile?region=eu&realm=" + realm + "&name=" + characterName + "&fields=mythic_plus_scores_by_season:current,mythic_plus_ranks,mythic_plus_best_runs",
                 HttpMethod.GET, httpEntity, String.class);
         return response.getBody();
     }

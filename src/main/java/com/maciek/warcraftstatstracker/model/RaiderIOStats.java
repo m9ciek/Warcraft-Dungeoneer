@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MythicPlusStats {
+public class RaiderIOStats {
 
     private double overallScore;
     private int worldRank;
