@@ -24,13 +24,8 @@ public class CharacterController {
 
     @GetMapping("/character/{name}")
     public ResponseEntity<Character> getCharacter(@PathVariable String name, @RequestParam String realm, OAuth2Authentication oAuth2Authentication) {
-        String blizzardApiResponse;
-        try {
-            blizzardApiResponse = blizzardApiService.getBlizzardCharacterData(name, realm, oAuth2Authentication);
-        } catch (HttpClientErrorException e) {
-            return ResponseEntity.notFound().build();
-        }
 
+        String blizzardApiResponse = blizzardApiService.getBlizzardCharacterData(name, realm, oAuth2Authentication);
         Character character = characterService.getCharacterFromApi(blizzardApiResponse);
         return ResponseEntity.ok(character);
     }
