@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class RaiderIoApiService {
 
-    public String getRaiderIOApi(String characterName, String realm) {
+    public String getRaiderIOCharacterData(String characterName, String realm) {
         realm = realm.toLowerCase().trim().replace(" ", "-");
         characterName = characterName.toLowerCase().trim();
 

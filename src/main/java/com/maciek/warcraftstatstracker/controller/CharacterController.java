@@ -1,6 +1,5 @@
 package com.maciek.warcraftstatstracker.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.maciek.warcraftstatstracker.model.Character;
 import com.maciek.warcraftstatstracker.service.BlizzardApiService;
 import com.maciek.warcraftstatstracker.service.CharacterService;
@@ -24,18 +23,15 @@ public class CharacterController {
     }
 
     @GetMapping("/character/{name}")
-    public ResponseEntity<Character> getCharacter(@PathVariable String name, @RequestParam String realm, OAuth2Authentication oAuth2Authentication) throws JsonProcessingException {
-        String realmCorrected = realm.toLowerCase().trim().replace(" ", "-"); //ex. Tarren Mill -> tarren-mill
-        ResponseEntity<String> blizzardApiResponse;
+    public ResponseEntity<Character> getCharacter(@PathVariable String name, @RequestParam String realm, OAuth2Authentication oAuth2Authentication) {
+        String blizzardApiResponse;
         try {
-            blizzardApiResponse = blizzardApiService
-                    .getRequestBlizzardApi("https://eu.api.blizzard.com/profile/wow/character/" + realmCorrected + "/" + name.toLowerCase() + "?namespace=profile-eu&locale=en_US",
-                            String.class, oAuth2Authentication);
+            blizzardApiResponse = blizzardApiService.getBlizzardCharacterData(name, realm, oAuth2Authentication);
         } catch (HttpClientErrorException e) {
             return ResponseEntity.notFound().build();
         }
 
-        Character character = characterService.getCharacterFromApi(blizzardApiResponse.getBody());
+        Character character = characterService.getCharacterFromApi(blizzardApiResponse);
         return ResponseEntity.ok(character);
     }
 }

@@ -19,7 +19,7 @@ public class CharacterService {
 
     public Character getCharacterFromApi(String apiRequest) {
         Character character = CharacterMapper.mapJSONToCharacter(apiRequest);
-        String raiderIOResponse = raiderIoApiService.getRaiderIOApi(character.getName(), character.getRealm());
+        String raiderIOResponse = raiderIoApiService.getRaiderIOCharacterData(character.getName(), character.getRealm());
         RaiderIOStats raiderIOStats = RaiderIODataMapper.mapJSONToRaiderIOStats(raiderIOResponse);
         character.getCharacterDetails().setRaiderIOStats(raiderIOStats);
         return character;

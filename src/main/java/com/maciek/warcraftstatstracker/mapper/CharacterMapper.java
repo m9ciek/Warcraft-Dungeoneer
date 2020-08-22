@@ -25,54 +25,54 @@ public class CharacterMapper {
         return character;
     }
 
-    private static void populateCharacter(JsonNode node, Character character) {
+    private static void populateCharacter(JsonNode node, Character characterToPopulate) {
         JsonNode child = node.get("realm");
         JsonNode childField = child.get("name");
-        character.setRealm(childField.asText());
+        characterToPopulate.setRealm(childField.asText());
 
         child = node.get("name");
-        character.setName(child.asText());
+        characterToPopulate.setName(child.asText());
 
         child = node.get("id");
-        character.setId(child.asLong());
+        characterToPopulate.setId(child.asLong());
 
         child = node.get("_links");
         childField = child.get("self");
         child = childField.get("href");
-        character.setUrl(child.asText());
+        characterToPopulate.setUrl(child.asText());
 
         child = node.get("character_class");
         childField = child.get("name");
-        character.setCharacterClass(childField.asText());
+        characterToPopulate.setCharacterClass(childField.asText());
     }
 
-    private static void populateCharacterDetails(JsonNode node, CharacterDetails characterDetails) {
+    private static void populateCharacterDetails(JsonNode node, CharacterDetails characterDetailsToPopulate) {
         JsonNode child = node.get("race");
         JsonNode childField = child.get("name");
-        characterDetails.setRace(childField.asText());
+        characterDetailsToPopulate.setRace(childField.asText());
 
         child = node.get("faction");
         childField = child.get("name");
-        characterDetails.setFaction(childField.asText());
+        characterDetailsToPopulate.setFaction(childField.asText());
 
         child = node.get("active_spec");
         childField = child.get("name");
-        characterDetails.setActiveSpec(childField.asText());
+        characterDetailsToPopulate.setActiveSpec(childField.asText());
 
         child = node.get("last_login_timestamp");
-        characterDetails.setLastLogin(new Timestamp(child.asLong()).toLocalDateTime());
+        characterDetailsToPopulate.setLastLogin(new Timestamp(child.asLong()).toLocalDateTime());
 
         child = node.get("level");
-        characterDetails.setLevel(child.asInt());
+        characterDetailsToPopulate.setLevel(child.asInt());
 
         child = node.get("average_item_level");
-        characterDetails.setAverageItemLevel(child.asInt());
+        characterDetailsToPopulate.setAverageItemLevel(child.asInt());
 
         //In case of not guild field provided
         child = node.get("guild");
         if (child != null) {
             childField = child.get("name");
-            characterDetails.setGuild(childField.asText());
+            characterDetailsToPopulate.setGuild(childField.asText());
         }
     }
 

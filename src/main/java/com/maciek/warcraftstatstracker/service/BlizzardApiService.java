@@ -16,6 +16,14 @@ public class BlizzardApiService {
 
     private final Logger logger = LoggerFactory.getLogger(BlizzardApiService.class);
 
+    public String getBlizzardCharacterData(String characterName, String realm, OAuth2Authentication authentication) {
+        String realmCorrected = realm.toLowerCase().trim().replace(" ", "-"); //ex. Tarren Mill -> tarren-mill
+        ResponseEntity<String> blizzardApiResponse =
+                getRequestBlizzardApi("https://eu.api.blizzard.com/profile/wow/character/" + realmCorrected + "/" + characterName.toLowerCase() + "?namespace=profile-eu&locale=en_US",
+                        String.class, authentication);
+        return blizzardApiResponse.getBody();
+    }
+
     public <T> ResponseEntity<T> getRequestBlizzardApi(String url, Class<T> responseType, OAuth2Authentication oAuth2Authentication) {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity httpEntity = addAuthorizationHeader(oAuth2Authentication);
