@@ -13,7 +13,7 @@ public class RaiderIODataMapper {
         JsonNode node;
         try {
             node = mapper.readValue(jsonData, JsonNode.class);
-            populateRaiderIOStats(raiderIOStats, node);
+            populateRaiderIOStats(node, raiderIOStats);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -21,7 +21,7 @@ public class RaiderIODataMapper {
         return raiderIOStats;
     }
 
-    private static void populateRaiderIOStats(RaiderIOStats raiderIOStatsToPopulate, JsonNode node) {
+    private static void populateRaiderIOStats(JsonNode node, RaiderIOStats raiderIOStatsToPopulate) {
         JsonNode parent = node.get("mythic_plus_scores_by_season");
         JsonNode child = parent.get(0).get("scores");
         JsonNode childField = child.get("all");
