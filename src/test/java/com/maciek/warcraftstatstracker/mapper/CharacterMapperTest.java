@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,7 +28,7 @@ class CharacterMapperTest {
     void should_correctly_map_JSON_to_character() {
         //test checks only crucial data
         LocalDateTime loginTime = LocalDateTime.of(2020, 8, 13, 11, 0, 30);
-        CharacterDetails characterDetails = new CharacterDetails(120, "Horde", "Troll", "Balance", null, 478, loginTime, new RaiderIOStats());
+        CharacterDetails characterDetails = new CharacterDetails(120, "Horde", "Troll", "Balance", null, 478, loginTime, new RaiderIOStats(), Collections.emptyList());
         Character character = new Character(130373741, "Druiss", "Druid", "Tarren Mill", "https://api-profile", characterDetails);
 
         Character mappedCharacter = CharacterMapper.mapJSONToCharacter(responseFromApi);

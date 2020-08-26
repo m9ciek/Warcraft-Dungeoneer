@@ -27,20 +27,6 @@ public class WarcraftLogsDataMapper {
         return warcraftLogsStats;
     }
 
-    private static WarcraftLogsStats mapJSONToWarcraftLogsStats(String jsonData, int elementNumber) {
-        ObjectMapper mapper = new ObjectMapper();
-        WarcraftLogsStats warcraftLogsStats = new WarcraftLogsStats();
-        JsonNode node;
-        try {
-            node = mapper.readValue(jsonData, JsonNode.class);
-            populateWarcraftLogsStats(node, warcraftLogsStats, elementNumber);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        return warcraftLogsStats;
-    }
-
     private static void populateWarcraftLogsStats(JsonNode node, WarcraftLogsStats warcraftLogsStatsToPopulate, int elementNumber) {
         JsonNode parent = node.get(elementNumber);
 

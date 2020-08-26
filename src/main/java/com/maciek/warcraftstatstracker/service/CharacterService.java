@@ -32,6 +32,7 @@ public class CharacterService {
         List<WarcraftLogsStats> warcraftLogsStats = WarcraftLogsDataMapper.mapJSONToWarcraftLogsStats(warcraftLogsResponse);
 
         character.getCharacterDetails().setRaiderIOStats(raiderIOStats);
+        character.getCharacterDetails().setWarcraftLogsStats(warcraftLogsStats);
         return character;
     }
 }

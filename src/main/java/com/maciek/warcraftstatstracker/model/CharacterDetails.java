@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -28,4 +29,7 @@ public class CharacterDetails {
 
     @JsonProperty("raiderIO-stats")
     private RaiderIOStats raiderIOStats;
+
+    @JsonProperty("warcraft-logs-stats")
+    private List<WarcraftLogsStats> warcraftLogsStats;
 }
