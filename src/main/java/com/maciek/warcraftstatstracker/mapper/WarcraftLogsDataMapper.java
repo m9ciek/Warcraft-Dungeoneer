@@ -5,15 +5,35 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maciek.warcraftstatstracker.model.WarcraftLogsStats;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WarcraftLogsDataMapper {
 
-    public static WarcraftLogsStats mapJSONToRaiderIOStats(String jsonData) {
+    public static List<WarcraftLogsStats> mapJSONToWarcraftLogsStats(String jsonData) {
+        ObjectMapper mapper = new ObjectMapper();
+        List<WarcraftLogsStats> warcraftLogsStats = new ArrayList<>();
+        JsonNode node;
+        try {
+            node = mapper.readValue(jsonData, JsonNode.class);
+            for(int i=0; i<node.size(); i++) {
+                WarcraftLogsStats singleWarcraftLogsStat = new WarcraftLogsStats();
+                populateWarcraftLogsStats(node, singleWarcraftLogsStat, i);
+                warcraftLogsStats.add(singleWarcraftLogsStat);
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return warcraftLogsStats;
+    }
+
+    private static WarcraftLogsStats mapJSONToWarcraftLogsStats(String jsonData, int elementNumber) {
         ObjectMapper mapper = new ObjectMapper();
         WarcraftLogsStats warcraftLogsStats = new WarcraftLogsStats();
         JsonNode node;
         try {
             node = mapper.readValue(jsonData, JsonNode.class);
-            populateWarcraftLogsStats(node, warcraftLogsStats);
+            populateWarcraftLogsStats(node, warcraftLogsStats, elementNumber);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -21,18 +41,22 @@ public class WarcraftLogsDataMapper {
         return warcraftLogsStats;
     }
 
-    private static void populateWarcraftLogsStats(JsonNode node, WarcraftLogsStats warcraftLogsStatsToPopulate) {
-        JsonNode parent = node.get("mythic_plus_scores_by_season");
-        JsonNode child = parent.get(0).get("scores");
-        JsonNode childField = child.get("all");
-//        warcraftLogsStatsToPopulate.setOverallScore(childField.asDouble());
+    private static void populateWarcraftLogsStats(JsonNode node, WarcraftLogsStats warcraftLogsStatsToPopulate, int elementNumber) {
+        JsonNode parent = node.get(elementNumber);
 
-        parent = node.get("mythic_plus_ranks");
-        child = parent.get("overall");
-        childField = child.get("world");
-//        warcraftLogsStatsToPopulate.setWorldRank(childField.asInt());
+        JsonNode child = parent.get("encounterID");
+        warcraftLogsStatsToPopulate.setEncounterId(child.asInt());
 
-        childField = child.get("realm");
-//        warcraftLogsStatsToPopulate.setRealmRank(childField.asInt());
+        child = parent.get("encounterName");
+        warcraftLogsStatsToPopulate.setEncounterName(child.asText());
+
+        child = parent.get("reportID");
+        warcraftLogsStatsToPopulate.setReportId(child.asText());
+
+        child = parent.get("difficulty");
+        warcraftLogsStatsToPopulate.setDifficulty(child.asInt());
+
+        child = parent.get("percentile");
+        warcraftLogsStatsToPopulate.setPercentile(child.asDouble());
     }
 }
