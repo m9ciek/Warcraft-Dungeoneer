@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 public class CharacterService {
 
     private RaiderIoApiService raiderIoApiService;
+    private WarcraftLogsApiService warcraftLogsApiService;
 
     @Autowired
-    public CharacterService(RaiderIoApiService raiderIoApiService) {
+    public CharacterService(RaiderIoApiService raiderIoApiService, WarcraftLogsApiService warcraftLogsApiService) {
         this.raiderIoApiService = raiderIoApiService;
+        this.warcraftLogsApiService = warcraftLogsApiService;
     }
 
     public Character getCharacterFromApi(String apiRequest) {
