@@ -16,7 +16,7 @@ public class WarcraftLogsDataMapper {
         JsonNode node;
         try {
             node = mapper.readValue(jsonData, JsonNode.class);
-            for(int i=0; i<node.size(); i++) {
+            for (int i = 0; i < node.size(); i++) {
                 WarcraftLogsStats singleWarcraftLogsStat = new WarcraftLogsStats();
                 populateWarcraftLogsStats(node, singleWarcraftLogsStat, i);
                 warcraftLogsStats.add(singleWarcraftLogsStat);
@@ -43,6 +43,7 @@ public class WarcraftLogsDataMapper {
         warcraftLogsStatsToPopulate.setDifficulty(child.asInt());
 
         child = parent.get("percentile");
-        warcraftLogsStatsToPopulate.setPercentile(child.asDouble());
+        warcraftLogsStatsToPopulate.setPercentile(Math.round(child.asDouble() * 100.0) / 100.0); //rounded up to 2 decimal places
     }
+
 }

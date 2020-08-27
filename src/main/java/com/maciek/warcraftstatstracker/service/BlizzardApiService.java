@@ -32,7 +32,7 @@ public class BlizzardApiService {
 
     private HttpEntity addAuthorizationHeader(OAuth2Authentication details) {
         String token = ((OAuth2AuthenticationDetails) details.getDetails()).getTokenValue();
-        logger.info(token);
+        logger.info("User token: " + token); //for testing purposes
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", "Bearer " + token);
         return new HttpEntity(httpHeaders);
