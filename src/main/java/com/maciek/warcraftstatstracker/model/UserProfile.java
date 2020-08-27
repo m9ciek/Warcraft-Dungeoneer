@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WowProfile {
+public class UserProfile {
     @JsonProperty("id")
     private long id;
     @JsonProperty("wow_accounts")

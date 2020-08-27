@@ -2,7 +2,7 @@ package com.maciek.warcraftstatstracker.service;
 
 import com.maciek.warcraftstatstracker.model.Character;
 import com.maciek.warcraftstatstracker.model.WowAccount;
-import com.maciek.warcraftstatstracker.model.WowProfile;
+import com.maciek.warcraftstatstracker.model.UserProfile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 public class UserDataService {
 
     //Returns characters with provided name from different realms - if exists
-    public List<Character> getCharactersForWowProfile(WowProfile wowProfile, String characterName) {
+    public List<Character> getCharactersForWowProfile(UserProfile userProfile, String characterName) {
         //First element always returns valid WowAccount
-        WowAccount wowAccount = wowProfile.getWowAccounts().get(0);
+        WowAccount wowAccount = userProfile.getWowAccounts().get(0);
         List<Character> characters = wowAccount.getCharacters().stream()
                 .filter(e -> e.getName().equals(capitalize(characterName)))
                 .collect(Collectors.toList());
