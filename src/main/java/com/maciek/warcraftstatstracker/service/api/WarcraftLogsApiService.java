@@ -1,4 +1,4 @@
-package com.maciek.warcraftstatstracker.service;
+package com.maciek.warcraftstatstracker.service.api;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -8,18 +8,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class RaiderIoApiService {
+public class WarcraftLogsApiService {
 
-    public String getRaiderIOCharacterData(String characterName, String realm) {
-        realm = realm.toLowerCase().trim().replace(" ", "-");
+    public String getWarcraftLogsCharacterData(String characterName, String realm) {
         characterName = characterName.toLowerCase().trim();
+        realm = realm.toLowerCase().trim().replace(" ", "-");
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("accept", "application/json");
         HttpEntity httpEntity = new HttpEntity(httpHeaders);
-        ResponseEntity<String> response = restTemplate.exchange("https://raider.io/api/v1/characters/profile?region=eu&realm=" + realm + "&name=" + characterName + "&fields=mythic_plus_scores_by_season:current,mythic_plus_ranks,mythic_plus_best_runs",
+
+        ResponseEntity<String> response = restTemplate.exchange("https://www.warcraftlogs.com:443/v1/rankings/character/" + characterName + "/" + realm + "/eu?metric=dps&api_key=ca5b3c548fcdecb538db09c58c909bfa",
                 HttpMethod.GET, httpEntity, String.class);
         return response.getBody();
     }
+
 }

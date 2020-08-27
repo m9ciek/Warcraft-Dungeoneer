@@ -6,6 +6,8 @@ import com.maciek.warcraftstatstracker.mapper.WarcraftLogsDataMapper;
 import com.maciek.warcraftstatstracker.model.Character;
 import com.maciek.warcraftstatstracker.model.RaiderIOStats;
 import com.maciek.warcraftstatstracker.model.WarcraftLogsStats;
+import com.maciek.warcraftstatstracker.service.api.RaiderIoApiService;
+import com.maciek.warcraftstatstracker.service.api.WarcraftLogsApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -2,8 +2,8 @@ package com.maciek.warcraftstatstracker.service;
 
 import com.maciek.warcraftstatstracker.model.Character;
 import com.maciek.warcraftstatstracker.model.CharacterDetails;
-import com.maciek.warcraftstatstracker.model.WowAccount;
 import com.maciek.warcraftstatstracker.model.UserProfile;
+import com.maciek.warcraftstatstracker.model.WowAccount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +50,7 @@ class UserDataServiceTest {
     }
 
     @Test
-    void should_capitalize_and_return_with_correct_name () {
-        assertEquals("John", userDataService.getCharactersForWowProfile(userProfile,"joHn").get(0).getName());
+    void should_capitalize_and_return_with_correct_name() {
+        assertEquals("John", userDataService.getCharactersForWowProfile(userProfile, "joHn").get(0).getName());
     }
 }

@@ -1,7 +1,7 @@
 package com.maciek.warcraftstatstracker.controller;
 
 import com.maciek.warcraftstatstracker.model.Character;
-import com.maciek.warcraftstatstracker.service.BlizzardApiService;
+import com.maciek.warcraftstatstracker.service.api.BlizzardApiService;
 import com.maciek.warcraftstatstracker.service.CharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
