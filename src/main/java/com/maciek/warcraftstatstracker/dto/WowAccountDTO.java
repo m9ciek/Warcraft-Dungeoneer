@@ -1,5 +1,6 @@
 package com.maciek.warcraftstatstracker.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,5 +14,6 @@ import java.util.List;
 @Builder
 public class WowAccountDTO {
     private long id;
+    @JsonProperty("characters")
     private List<UserCharacterDTO> userCharacters;
 }

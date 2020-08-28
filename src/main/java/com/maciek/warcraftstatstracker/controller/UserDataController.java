@@ -1,9 +1,7 @@
 package com.maciek.warcraftstatstracker.controller;
 
 import com.maciek.warcraftstatstracker.dto.UserCharacterDTO;
-import com.maciek.warcraftstatstracker.dto.WowAccountDTO;
 import com.maciek.warcraftstatstracker.model.User;
-import com.maciek.warcraftstatstracker.model.UserProfile;
 import com.maciek.warcraftstatstracker.service.UserDataService;
 import com.maciek.warcraftstatstracker.service.api.BlizzardApiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +34,9 @@ public class UserDataController {
     }
 
     @GetMapping("/wow-profile")
-    public ResponseEntity<UserProfile> getWowData(OAuth2Authentication oAuth2Authentication) {
-        ResponseEntity<UserProfile> response = blizzardApiService.getRequestBlizzardApi("https://eu.api.blizzard.com/profile/user/wow?namespace=profile-eu&locale=en_EU",
-                UserProfile.class, oAuth2Authentication);
+    public ResponseEntity<?> getWowData(OAuth2Authentication oAuth2Authentication) {
+        ResponseEntity<String> response = blizzardApiService.getRequestBlizzardApi("https://eu.api.blizzard.com/profile/user/wow?namespace=profile-eu&locale=en_EU",
+                String.class, oAuth2Authentication);
         return ResponseEntity.ok(response.getBody());
     }
 
