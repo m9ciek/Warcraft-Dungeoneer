@@ -14,5 +14,4 @@ import java.util.List;
 public class DungeonData {
     private int season;
     private List<MythicPlusDungeon> mythicPlusDungeons;
-    private List<Character> members;
 }

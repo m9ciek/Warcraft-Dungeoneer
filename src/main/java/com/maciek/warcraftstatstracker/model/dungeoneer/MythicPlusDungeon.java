@@ -14,10 +14,13 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class MythicPlusDungeon {
+    private int id;
+    private String name;
     private int keystoneLevel;
     private LocalDateTime completedDate;
     private LocalTime duration;
     private LocalTime timer;
     private Set<KeystoneAffix> affixes;
+    private boolean isCompletedWithinTime;
     private double score;
 }
