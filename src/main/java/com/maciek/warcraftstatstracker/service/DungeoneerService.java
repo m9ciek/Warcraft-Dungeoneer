@@ -37,7 +37,6 @@ public class DungeoneerService {
 
         DungeonData dungeonData = new DungeonData();
         List<MythicPlusDungeon> mythicPlusDungeonList = new ArrayList<>();
-        Set<KeystoneAffix> keystoneAffixSet = new HashSet<>();
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode node = objectMapper.readValue(response.getBody(), JsonNode.class);
@@ -53,6 +52,19 @@ public class DungeoneerService {
             LocalTime duration = LocalTime.ofSecondOfDay(childNode.get("duration").asLong() / 1000);
 //            LocalTime timer;
 
+            Set<KeystoneAffix> keystoneAffixes = new HashSet<>();
+
+            for (int j = 0; j < childNode.get("keystone_affixes").size(); j++) {
+                JsonNode affixNode = childNode.get("keystone_affixes").get(j);
+                KeystoneAffix affix = KeystoneAffix.builder()
+                        .id(affixNode.get("id").asInt())
+                        .href(affixNode.get("key").get("href").asText())
+                        .name(affixNode.get("name").asText())
+                        .build();
+
+                keystoneAffixes.add(affix);
+            }
+
             MythicPlusDungeon dungeon = MythicPlusDungeon.builder()
                     .id(childNode.get("dungeon").get("id").asInt())
                     .name(childNode.get("dungeon").get("name").asText())
@@ -61,6 +73,7 @@ public class DungeoneerService {
                     .completedDate(completedDate)
                     .duration(duration)
                     .timer(duration) //subject to change
+                    .affixes(keystoneAffixes)
                     .build();
             mythicPlusDungeonList.add(dungeon);
         }
