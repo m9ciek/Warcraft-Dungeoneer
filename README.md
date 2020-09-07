@@ -26,9 +26,9 @@ Website uses OAuth 2.0 Authorization - In order to be able to use warcraft track
 App by default starts on `localhost:8080`
 #### Rest Endpoints:
 * GET:<br/>
-  * **Logged user data** - `/api/api/user-data`  
-  * **Logged user World of Warcraft profile details** - `/api/api/user-data/wow-profile`  
-  * **Logged user all characters on every realm** - `/api/api/user-data/user-characters`
+  * **Logged user data** - `/api/user-data`  
+  * **Logged user World of Warcraft profile details** - `/api/user-data/wow-profile`  
+  * **Logged user all characters on every realm** - `/api/user-data/user-characters`
   #####
   * **Get character detailed data** - `/api/character/{characterName}`  
   *Required param:* `realm` - type String  
