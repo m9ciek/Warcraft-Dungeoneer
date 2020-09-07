@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maciek.warcraftstatstracker.model.dungeoneer.DungeonData;
+import com.maciek.warcraftstatstracker.model.dungeoneer.DungeonTimer;
 import com.maciek.warcraftstatstracker.model.dungeoneer.KeystoneAffix;
 import com.maciek.warcraftstatstracker.model.dungeoneer.MythicPlusDungeon;
 
@@ -11,10 +12,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class DungeonDataMapper {
 
@@ -40,7 +38,6 @@ public class DungeonDataMapper {
 
             LocalDateTime completedDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(childNode.get("completed_timestamp").asLong()), ZoneId.systemDefault());
             LocalTime duration = LocalTime.ofSecondOfDay(childNode.get("duration").asLong() / 1000);
-//            LocalTime timer;
 
             Set<KeystoneAffix> keystoneAffixes = mapToKeystoneAffixSet(childNode);
 
@@ -51,9 +48,9 @@ public class DungeonDataMapper {
                     .keystoneLevel(childNode.get("keystone_level").asInt())
                     .completedDate(completedDate)
                     .duration(duration)
-                    .timer(duration) //subject to change
                     .affixes(keystoneAffixes)
                     .build();
+            dungeon.setTimer(DungeonTimer.getDungeonTimer(dungeon.getName()));
             mythicPlusDungeonList.add(dungeon);
         }
         return mythicPlusDungeonList;
@@ -74,6 +71,5 @@ public class DungeonDataMapper {
         }
         return keystoneAffixes;
     }
-
 
 }
