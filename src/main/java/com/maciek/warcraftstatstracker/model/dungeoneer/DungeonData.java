@@ -13,5 +13,6 @@ import java.util.List;
 @Builder
 public class DungeonData {
     private int season;
+    private double totalScore;
     private List<MythicPlusDungeon> mythicPlusDungeons;
 }

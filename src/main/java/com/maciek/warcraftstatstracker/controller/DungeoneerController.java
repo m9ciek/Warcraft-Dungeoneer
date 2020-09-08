@@ -20,6 +20,6 @@ public class DungeoneerController {
 
     @GetMapping("/data/{characterName}")
     public DungeonData getDungeonData(@PathVariable String characterName, @RequestParam String realm, @RequestParam int season, OAuth2Authentication oAuth2Authentication) throws JsonProcessingException {
-        return dungeoneerService.getDungeonDataFromApi(characterName, realm, season, oAuth2Authentication);
+        return dungeoneerService.getDungeonData(characterName, realm, season, oAuth2Authentication);
     }
 }
