@@ -11,14 +11,14 @@ import org.springframework.security.oauth2.provider.authentication.OAuth2Authent
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalTime;
-
 @Service
-public class BlizzardApiService {
+public class BlizzardApiService implements ApiService {
 
     private final Logger logger = LoggerFactory.getLogger(BlizzardApiService.class);
+    private OAuth2Authentication authentication;
 
-    public String getBlizzardCharacterData(String characterName, String realm, OAuth2Authentication authentication) {
+    @Override
+    public String getCharacterData(String characterName, String realm) {
         String realmCorrected = realm.toLowerCase().trim().replace(" ", "-"); //ex. Tarren Mill -> tarren-mill
         ResponseEntity<String> blizzardApiResponse =
                 getRequestBlizzardApi("https://eu.api.blizzard.com/profile/wow/character/" + realmCorrected + "/" + characterName.toLowerCase() + "?namespace=profile-eu&locale=en_US",
@@ -38,5 +38,10 @@ public class BlizzardApiService {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", "Bearer " + token);
         return new HttpEntity(httpHeaders);
+    }
+
+    @Override
+    public void authenticateOAuth2(OAuth2Authentication oAuth2Authentication) {
+        this.authentication = oAuth2Authentication;
     }
 }
