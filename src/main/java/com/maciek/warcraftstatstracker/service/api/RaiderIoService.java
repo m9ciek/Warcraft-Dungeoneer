@@ -8,20 +8,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class WarcraftLogsApiService {
+public class RaiderIoService implements ApiService {
 
-    public String getWarcraftLogsCharacterData(String characterName, String realm) {
-        characterName = characterName.toLowerCase().trim();
+    @Override
+    public String getCharacterData(String characterName, String realm) {
         realm = realm.toLowerCase().trim().replace(" ", "-");
+        characterName = characterName.toLowerCase().trim();
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("accept", "application/json");
         HttpEntity httpEntity = new HttpEntity(httpHeaders);
-
-        ResponseEntity<String> response = restTemplate.exchange("https://www.warcraftlogs.com:443/v1/rankings/character/" + characterName + "/" + realm + "/eu?metric=dps&api_key=ca5b3c548fcdecb538db09c58c909bfa",
+        ResponseEntity<String> response = restTemplate.exchange("https://raider.io/api/v1/characters/profile?region=eu&realm=" + realm + "&name=" + characterName + "&fields=mythic_plus_scores_by_season:current,mythic_plus_ranks,mythic_plus_best_runs",
                 HttpMethod.GET, httpEntity, String.class);
         return response.getBody();
     }
-
 }
