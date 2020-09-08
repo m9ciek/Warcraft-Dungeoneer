@@ -12,12 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class BlizzardApiService implements ApiService {
+public class BlizzardApiService {
 
     private final Logger logger = LoggerFactory.getLogger(BlizzardApiService.class);
     private OAuth2Authentication authentication;
 
-    @Override
     public String getCharacterData(String characterName, String realm) {
         String realmCorrected = realm.toLowerCase().trim().replace(" ", "-"); //ex. Tarren Mill -> tarren-mill
         ResponseEntity<String> blizzardApiResponse =
@@ -40,7 +39,6 @@ public class BlizzardApiService implements ApiService {
         return new HttpEntity(httpHeaders);
     }
 
-    @Override
     public void authenticateOAuth2(OAuth2Authentication oAuth2Authentication) {
         this.authentication = oAuth2Authentication;
     }

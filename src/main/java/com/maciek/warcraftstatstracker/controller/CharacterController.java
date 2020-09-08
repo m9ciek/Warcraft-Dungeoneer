@@ -1,9 +1,8 @@
 package com.maciek.warcraftstatstracker.controller;
 
 import com.maciek.warcraftstatstracker.model.Character;
-import com.maciek.warcraftstatstracker.service.api.ApiService;
-import com.maciek.warcraftstatstracker.service.api.BlizzardApiService;
 import com.maciek.warcraftstatstracker.service.CharacterService;
+import com.maciek.warcraftstatstracker.service.api.BlizzardApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class CharacterController {
 
-    private ApiService blizzardApiService;
+    private BlizzardApiService blizzardApiService;
     private CharacterService characterService;
 
     @Autowired

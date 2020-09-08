@@ -4,7 +4,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,8 +24,4 @@ public class WarcraftLogsService implements ApiService {
         return response.getBody();
     }
 
-    @Override
-    public void authenticateOAuth2(OAuth2Authentication oAuth2Authentication) {
-
-    }
 }

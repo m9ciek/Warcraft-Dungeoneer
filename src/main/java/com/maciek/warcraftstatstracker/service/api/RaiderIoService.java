@@ -4,7 +4,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,10 +22,5 @@ public class RaiderIoService implements ApiService {
         ResponseEntity<String> response = restTemplate.exchange("https://raider.io/api/v1/characters/profile?region=eu&realm=" + realm + "&name=" + characterName + "&fields=mythic_plus_scores_by_season:current,mythic_plus_ranks,mythic_plus_best_runs",
                 HttpMethod.GET, httpEntity, String.class);
         return response.getBody();
-    }
-
-    @Override
-    public void authenticateOAuth2(OAuth2Authentication oAuth2Authentication) {
-
     }
 }
