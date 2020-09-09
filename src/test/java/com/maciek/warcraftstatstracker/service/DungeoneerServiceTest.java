@@ -1,7 +1,8 @@
-package com.maciek.warcraftstatstracker.service.dungeoneer;
+package com.maciek.warcraftstatstracker.service;
 
 import com.maciek.warcraftstatstracker.model.dungeoneer.DungeonData;
 import com.maciek.warcraftstatstracker.model.dungeoneer.MythicPlusDungeon;
+import com.maciek.warcraftstatstracker.service.dungeoneer.DungeoneerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
