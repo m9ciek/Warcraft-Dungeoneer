@@ -1,10 +1,10 @@
-package com.maciek.warcraftstatstracker.service;
+package com.maciek.warcraftstatstracker.service.dungeoneer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.maciek.warcraftstatstracker.mapper.DungeonDataMapper;
 import com.maciek.warcraftstatstracker.model.dungeoneer.DungeonData;
 import com.maciek.warcraftstatstracker.model.dungeoneer.MythicPlusDungeon;
-import com.maciek.warcraftstatstracker.service.api.BlizzardApiService;
+import com.maciek.warcraftstatstracker.external.api.BlizzardApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;

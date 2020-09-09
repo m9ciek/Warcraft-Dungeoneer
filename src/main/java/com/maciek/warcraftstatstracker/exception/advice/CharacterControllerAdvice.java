@@ -1,4 +1,4 @@
-package com.maciek.warcraftstatstracker.advice;
+package com.maciek.warcraftstatstracker.exception.advice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

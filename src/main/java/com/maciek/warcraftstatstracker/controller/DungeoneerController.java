@@ -2,7 +2,7 @@ package com.maciek.warcraftstatstracker.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.maciek.warcraftstatstracker.model.dungeoneer.DungeonData;
-import com.maciek.warcraftstatstracker.service.DungeoneerService;
+import com.maciek.warcraftstatstracker.service.dungeoneer.DungeoneerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;

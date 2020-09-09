@@ -1,4 +1,4 @@
-package com.maciek.warcraftstatstracker.model.dungeoneer;
+package com.maciek.warcraftstatstracker.constant;
 
 import org.springframework.stereotype.Component;
 

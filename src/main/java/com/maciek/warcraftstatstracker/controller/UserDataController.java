@@ -2,8 +2,8 @@ package com.maciek.warcraftstatstracker.controller;
 
 import com.maciek.warcraftstatstracker.dto.UserCharacterDTO;
 import com.maciek.warcraftstatstracker.model.User;
-import com.maciek.warcraftstatstracker.service.UserDataService;
-import com.maciek.warcraftstatstracker.service.api.BlizzardApiService;
+import com.maciek.warcraftstatstracker.service.user.UserDataService;
+import com.maciek.warcraftstatstracker.external.api.BlizzardApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;

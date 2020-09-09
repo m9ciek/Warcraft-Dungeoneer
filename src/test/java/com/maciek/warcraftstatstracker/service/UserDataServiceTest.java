@@ -4,6 +4,7 @@ import com.maciek.warcraftstatstracker.model.Character;
 import com.maciek.warcraftstatstracker.model.CharacterDetails;
 import com.maciek.warcraftstatstracker.model.UserProfile;
 import com.maciek.warcraftstatstracker.model.WowAccount;
+import com.maciek.warcraftstatstracker.service.user.UserDataService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

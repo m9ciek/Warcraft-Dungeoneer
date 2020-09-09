@@ -1,4 +1,4 @@
-package com.maciek.warcraftstatstracker.service.api;
+package com.maciek.warcraftstatstracker.external.api;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

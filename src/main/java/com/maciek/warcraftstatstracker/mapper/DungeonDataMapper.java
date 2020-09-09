@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maciek.warcraftstatstracker.model.dungeoneer.DungeonData;
-import com.maciek.warcraftstatstracker.model.dungeoneer.DungeonTimer;
+import com.maciek.warcraftstatstracker.constant.DungeonTimer;
 import com.maciek.warcraftstatstracker.model.dungeoneer.KeystoneAffix;
 import com.maciek.warcraftstatstracker.model.dungeoneer.MythicPlusDungeon;
 
