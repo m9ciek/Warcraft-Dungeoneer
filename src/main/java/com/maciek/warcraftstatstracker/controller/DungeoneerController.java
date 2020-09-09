@@ -1,6 +1,5 @@
 package com.maciek.warcraftstatstracker.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.maciek.warcraftstatstracker.model.dungeoneer.DungeonData;
 import com.maciek.warcraftstatstracker.service.dungeoneer.DungeoneerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ public class DungeoneerController {
     }
 
     @GetMapping("/data/{characterName}")
-    public DungeonData getDungeonData(@PathVariable String characterName, @RequestParam String realm, @RequestParam int season, OAuth2Authentication oAuth2Authentication) throws JsonProcessingException {
+    public DungeonData getDungeonData(@PathVariable String characterName, @RequestParam String realm, @RequestParam int season, OAuth2Authentication oAuth2Authentication) {
         return dungeoneerService.getDungeonData(characterName, realm, season, oAuth2Authentication);
     }
 }

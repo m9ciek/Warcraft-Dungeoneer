@@ -1,10 +1,9 @@
 package com.maciek.warcraftstatstracker.service.dungeoneer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.maciek.warcraftstatstracker.external.api.BlizzardApiService;
 import com.maciek.warcraftstatstracker.mapper.DungeonDataMapper;
 import com.maciek.warcraftstatstracker.model.dungeoneer.DungeonData;
 import com.maciek.warcraftstatstracker.model.dungeoneer.MythicPlusDungeon;
-import com.maciek.warcraftstatstracker.external.api.BlizzardApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -25,7 +24,7 @@ public class DungeoneerService {
         this.blizzardApiService = blizzardApiService;
     }
 
-    public DungeonData getDungeonData(String characterName, String realm, int season, OAuth2Authentication oAuth2Authentication) throws JsonProcessingException {
+    public DungeonData getDungeonData(String characterName, String realm, int season, OAuth2Authentication oAuth2Authentication) {
         ResponseEntity<String> response = blizzardApiService.getRequestBlizzardApi("https://eu.api.blizzard.com/profile/wow/character/" + realm + "/" + characterName + "/mythic-keystone-profile/season/" + season + "?namespace=profile-eu&locale=en_US",
                 String.class, oAuth2Authentication);
 

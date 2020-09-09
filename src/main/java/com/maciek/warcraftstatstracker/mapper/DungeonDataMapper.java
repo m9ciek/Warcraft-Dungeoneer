@@ -3,8 +3,8 @@ package com.maciek.warcraftstatstracker.mapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.maciek.warcraftstatstracker.model.dungeoneer.DungeonData;
 import com.maciek.warcraftstatstracker.constant.DungeonTimer;
+import com.maciek.warcraftstatstracker.model.dungeoneer.DungeonData;
 import com.maciek.warcraftstatstracker.model.dungeoneer.KeystoneAffix;
 import com.maciek.warcraftstatstracker.model.dungeoneer.MythicPlusDungeon;
 
@@ -12,15 +12,23 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class DungeonDataMapper {
 
-    public static DungeonData mapJSONToDungeonData(String jsonData) throws JsonProcessingException {
+    public static DungeonData mapJSONToDungeonData(String jsonData) {
         DungeonData dungeonData = new DungeonData();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode node = objectMapper.readValue(jsonData, JsonNode.class);
+        JsonNode node = null;
+        try {
+            node = objectMapper.readValue(jsonData, JsonNode.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
         dungeonData.setSeason(node.get("season").get("id").asInt());
         List<MythicPlusDungeon> mythicPlusDungeonList = mapToMythicPlusDungeonList(node);
