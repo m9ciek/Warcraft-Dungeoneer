@@ -32,7 +32,7 @@ public class DungeoneerService {
         List<MythicPlusDungeon> mythicPlusDungeons = playerDungeonData.getMythicPlusDungeons();
         mythicPlusDungeons
                 .forEach(e -> e.setScore(calculateDungeonScore(e)));
-        playerDungeonData.setMythicPlusDungeons(sortDungeonDataAsc(mythicPlusDungeons));
+        playerDungeonData.setMythicPlusDungeons(sortDungeonDataDsc(mythicPlusDungeons));
 
         double playerTotalScore = calculateTotalScore(playerDungeonData);
         playerDungeonData.setTotalScore(playerTotalScore);
@@ -68,7 +68,7 @@ public class DungeoneerService {
         return mythicPlusDungeons.stream().distinct().mapToDouble(MythicPlusDungeon::getScore).sum();
     }
 
-    public List<MythicPlusDungeon> sortDungeonDataAsc(List<MythicPlusDungeon> mythicPlusDungeons) {
+    public List<MythicPlusDungeon> sortDungeonDataDsc(List<MythicPlusDungeon> mythicPlusDungeons) {
         return mythicPlusDungeons.stream()
                 .sorted(Comparator.comparing(MythicPlusDungeon::getScore).reversed())
                 .collect(Collectors.toList());
