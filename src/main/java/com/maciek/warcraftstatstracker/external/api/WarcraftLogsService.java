@@ -11,17 +11,23 @@ import org.springframework.web.client.RestTemplate;
 public class WarcraftLogsService implements ApiService {
 
     public String getCharacterData(String characterName, String realm) {
-        characterName = characterName.toLowerCase().trim();
-        realm = realm.toLowerCase().trim().replace(" ", "-");
-
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("accept", "application/json");
         HttpEntity httpEntity = new HttpEntity(httpHeaders);
-
-        ResponseEntity<String> response = restTemplate.exchange("https://www.warcraftlogs.com:443/v1/rankings/character/" + characterName + "/" + realm + "/eu?metric=dps&api_key=ca5b3c548fcdecb538db09c58c909bfa",
+        ResponseEntity<String> response = restTemplate.exchange("https://www.warcraftlogs.com:443/v1/rankings/character/" +
+                        correctCharacterName(characterName) + "/" +
+                        correctRealmName(realm) + "/eu?metric=dps&api_key=ca5b3c548fcdecb538db09c58c909bfa",
                 HttpMethod.GET, httpEntity, String.class);
         return response.getBody();
+    }
+
+    private String correctRealmName(String realmName) {
+        return realmName.toLowerCase().trim().replace(" ", "-");
+    }
+
+    private String correctCharacterName(String characterName) {
+        return characterName.toLowerCase().trim();
     }
 
 }

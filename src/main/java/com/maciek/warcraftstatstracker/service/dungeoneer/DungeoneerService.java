@@ -28,10 +28,16 @@ public class DungeoneerService {
         ResponseEntity<String> response = blizzardApiService.getRequestBlizzardApi("https://eu.api.blizzard.com/profile/wow/character/" + realm + "/" + characterName + "/mythic-keystone-profile/season/" + season + "?namespace=profile-eu&locale=en_US",
                 String.class, oAuth2Authentication);
 
-        DungeonData playerDungeonData = DungeonDataMapper.mapJSONToDungeonData(response.getBody());
+        return constructDungeonData(response.getBody());
+    }
+
+    private DungeonData constructDungeonData(String dungeonDataInJson) {
+        DungeonData playerDungeonData = DungeonDataMapper.mapJSONToDungeonData(dungeonDataInJson);
+
         List<MythicPlusDungeon> mythicPlusDungeons = playerDungeonData.getMythicPlusDungeons();
         mythicPlusDungeons
                 .forEach(e -> e.setScore(calculateDungeonScore(e)));
+
         playerDungeonData.setMythicPlusDungeons(sortDungeonDataDsc(mythicPlusDungeons));
 
         double playerTotalScore = calculateTotalScore(playerDungeonData);

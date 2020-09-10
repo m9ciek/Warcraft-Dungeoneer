@@ -18,9 +18,8 @@ public class BlizzardApiService {
     private OAuth2Authentication authentication;
 
     public String getCharacterData(String characterName, String realm) {
-        String realmCorrected = realm.toLowerCase().trim().replace(" ", "-"); //ex. Tarren Mill -> tarren-mill
         ResponseEntity<String> blizzardApiResponse =
-                getRequestBlizzardApi("https://eu.api.blizzard.com/profile/wow/character/" + realmCorrected + "/" + characterName.toLowerCase() + "?namespace=profile-eu&locale=en_US",
+                getRequestBlizzardApi("https://eu.api.blizzard.com/profile/wow/character/" + correctRealmName(realm) + "/" + characterName.toLowerCase() + "?namespace=profile-eu&locale=en_US",
                         String.class, authentication);
         return blizzardApiResponse.getBody();
     }
@@ -31,6 +30,10 @@ public class BlizzardApiService {
         return restTemplate.exchange(url, HttpMethod.GET, httpEntity, responseType);
     }
 
+    public void authenticateOAuth2(OAuth2Authentication oAuth2Authentication) {
+        this.authentication = oAuth2Authentication;
+    }
+
     private HttpEntity addAuthorizationHeader(OAuth2Authentication details) {
         String token = ((OAuth2AuthenticationDetails) details.getDetails()).getTokenValue();
         logger.info("User token: " + token); //for testing purposes
@@ -39,7 +42,7 @@ public class BlizzardApiService {
         return new HttpEntity(httpHeaders);
     }
 
-    public void authenticateOAuth2(OAuth2Authentication oAuth2Authentication) {
-        this.authentication = oAuth2Authentication;
+    private String correctRealmName(String realmName) {
+        return realmName.toLowerCase().trim().replace(" ", "-");
     }
 }
