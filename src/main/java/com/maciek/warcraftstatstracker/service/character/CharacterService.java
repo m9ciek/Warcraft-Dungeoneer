@@ -11,6 +11,7 @@ import com.maciek.warcraftstatstracker.model.Character;
 import com.maciek.warcraftstatstracker.model.RaiderIOStats;
 import com.maciek.warcraftstatstracker.model.WarcraftLogsStats;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,16 @@ public class CharacterService {
 
     public Character getCharacterFromApi(String name, String realm, OAuth2Authentication oAuth2Authentication) {
         String characterDataString = blizzardApiService.getCharacterData(name, realm, oAuth2Authentication);
-        return constructCharacter(characterDataString);
+        Character character = constructCharacter(characterDataString);
+//        character.setRenderImageUrl(getCharacterRenderImageUrl(character, oAuth2Authentication));
+        return character;
+    }
+
+    public String getCharacterRenderImageUrl(Character character, OAuth2Authentication oAuth2Authentication) {
+        String realmSlug = character.getRealm().replace(" ", "-").toLowerCase().trim();
+        ResponseEntity<String> characterRenderResponse = blizzardApiService.getRequestBlizzardApi("https://eu.api.blizzard.com/profile/wow/character/" +
+                realmSlug + "/" + character.getName().toLowerCase() + "/character-media?namespace=profile-eu&locale=en_GB", String.class, oAuth2Authentication);
+        return CharacterMapper.extractCharacterRenderImageUrl(characterRenderResponse.getBody());
     }
 
     private Character constructCharacter(String characterDataInJson) {

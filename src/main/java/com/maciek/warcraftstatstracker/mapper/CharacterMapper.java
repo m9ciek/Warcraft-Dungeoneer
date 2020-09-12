@@ -1,5 +1,6 @@
 package com.maciek.warcraftstatstracker.mapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maciek.warcraftstatstracker.model.Character;
@@ -23,6 +24,19 @@ public class CharacterMapper {
         }
         character.setCharacterDetails(details);
         return character;
+    }
+
+    public static String extractCharacterRenderImageUrl(String dataJSON) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String renderImageURL = "";
+        JsonNode node;
+        try {
+            node = objectMapper.readValue(dataJSON, JsonNode.class);
+            renderImageURL = node.get("render_url").asText();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return renderImageURL;
     }
 
     private static void populateCharacter(JsonNode node, Character characterToPopulate) {

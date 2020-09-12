@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
         "name",
         "character-class"
 })
+@Builder
 public class Character {
     @JsonProperty("id")
     private long id;
@@ -26,6 +28,7 @@ public class Character {
     private String characterClass;
     private String realm;
     private String url;
+    private String renderImageUrl;
 
     @JsonAlias({"character"})
     private CharacterDetails characterDetails;

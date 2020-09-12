@@ -28,9 +28,9 @@ class UserDataServiceTest {
 
     @BeforeEach
     void setUp() {
-        Character character1 = new Character(1, "John", "Mage", "Tarren-mill", "http://url/data", new CharacterDetails());
-        Character character2 = new Character(2, "Mia", "Warrior", "Stormreaver", "http://url/data1", new CharacterDetails());
-        Character character3 = new Character(3, "John", "Mage", "Stormreaver", "http://url/data2", new CharacterDetails());
+        Character character1 = new Character(1, "John", "Mage", "Tarren-mill", "http://url/data", "", new CharacterDetails());
+        Character character2 = new Character(2, "Mia", "Warrior", "Stormreaver", "http://url/data1", "", new CharacterDetails());
+        Character character3 = new Character(3, "John", "Mage", "Stormreaver", "http://url/data2", "", new CharacterDetails());
         List<Character> characters = Arrays.asList(character1, character2, character3);
         WowAccount wowAccount = new WowAccount(1, characters);
         userProfile = new UserProfile(1, Collections.singletonList(wowAccount));
