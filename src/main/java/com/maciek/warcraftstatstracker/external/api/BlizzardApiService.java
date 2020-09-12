@@ -24,6 +24,13 @@ public class BlizzardApiService {
         return blizzardApiResponse.getBody();
     }
 
+    public String getDungeonData(String characterName, String realm, int season) {
+        ResponseEntity<String> response = getRequestBlizzardApi("https://eu.api.blizzard.com/profile/wow/character/" + realm + "/" + characterName + "/mythic-keystone-profile/season/" + season + "?namespace=profile-eu&locale=en_US",
+                String.class, authentication);
+
+        return response.getBody();
+    }
+
     public <T> ResponseEntity<T> getRequestBlizzardApi(String url, Class<T> responseType, OAuth2Authentication oAuth2Authentication) {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity httpEntity = addAuthorizationHeader(oAuth2Authentication);

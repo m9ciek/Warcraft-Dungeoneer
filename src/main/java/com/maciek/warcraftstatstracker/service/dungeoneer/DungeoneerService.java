@@ -5,7 +5,6 @@ import com.maciek.warcraftstatstracker.mapper.DungeonDataMapper;
 import com.maciek.warcraftstatstracker.model.dungeoneer.DungeonData;
 import com.maciek.warcraftstatstracker.model.dungeoneer.MythicPlusDungeon;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
@@ -25,25 +24,9 @@ public class DungeoneerService {
     }
 
     public DungeonData getDungeonData(String characterName, String realm, int season, OAuth2Authentication oAuth2Authentication) {
-        ResponseEntity<String> response = blizzardApiService.getRequestBlizzardApi("https://eu.api.blizzard.com/profile/wow/character/" + realm + "/" + characterName + "/mythic-keystone-profile/season/" + season + "?namespace=profile-eu&locale=en_US",
-                String.class, oAuth2Authentication);
-
-        return constructDungeonData(response.getBody());
-    }
-
-    private DungeonData constructDungeonData(String dungeonDataInJson) {
-        DungeonData playerDungeonData = DungeonDataMapper.mapJSONToDungeonData(dungeonDataInJson);
-
-        List<MythicPlusDungeon> mythicPlusDungeons = playerDungeonData.getMythicPlusDungeons();
-        mythicPlusDungeons
-                .forEach(e -> e.setScore(calculateDungeonScore(e)));
-
-        playerDungeonData.setMythicPlusDungeons(sortDungeonDataDsc(mythicPlusDungeons));
-
-        double playerTotalScore = calculateTotalScore(playerDungeonData);
-        playerDungeonData.setTotalScore(playerTotalScore);
-
-        return playerDungeonData;
+        blizzardApiService.authenticateOAuth2(oAuth2Authentication);
+        String dungeonDataString = blizzardApiService.getDungeonData(characterName, realm, season);
+        return constructDungeonData(dungeonDataString);
     }
 
     public double calculateDungeonScore(MythicPlusDungeon mythicPlusDungeon) {
@@ -78,5 +61,20 @@ public class DungeoneerService {
         return mythicPlusDungeons.stream()
                 .sorted(Comparator.comparing(MythicPlusDungeon::getScore).reversed())
                 .collect(Collectors.toList());
+    }
+
+    private DungeonData constructDungeonData(String dungeonDataInJson) {
+        DungeonData playerDungeonData = DungeonDataMapper.mapJSONToDungeonData(dungeonDataInJson);
+
+        List<MythicPlusDungeon> mythicPlusDungeons = playerDungeonData.getMythicPlusDungeons();
+        mythicPlusDungeons
+                .forEach(e -> e.setScore(calculateDungeonScore(e)));
+
+        playerDungeonData.setMythicPlusDungeons(sortDungeonDataDsc(mythicPlusDungeons));
+
+        double playerTotalScore = calculateTotalScore(playerDungeonData);
+        playerDungeonData.setTotalScore(playerTotalScore);
+
+        return playerDungeonData;
     }
 }
