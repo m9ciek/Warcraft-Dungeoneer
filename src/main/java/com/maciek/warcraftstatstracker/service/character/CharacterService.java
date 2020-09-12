@@ -31,17 +31,24 @@ public class CharacterService {
     }
 
     public Character getCharacterFromApi(String name, String realm, OAuth2Authentication oAuth2Authentication) {
-        String apiResponse = blizzardApiService.getCharacterData(name, realm, oAuth2Authentication);
-        Character character = CharacterMapper.mapJSONToCharacter(apiResponse);
+        String characterDataString = blizzardApiService.getCharacterData(name, realm, oAuth2Authentication);
+        return constructCharacter(characterDataString);
+    }
 
-        String raiderIOResponse = raiderIoApiService.getCharacterData(character.getName(), character.getRealm());
-        String warcraftLogsResponse = warcraftLogsApiService.getCharacterData(character.getName(), character.getRealm());
-
-        RaiderIOStats raiderIOStats = RaiderIODataMapper.mapJSONToRaiderIOStats(raiderIOResponse);
-        List<WarcraftLogsStats> warcraftLogsStats = WarcraftLogsDataMapper.mapJSONToWarcraftLogsStats(warcraftLogsResponse);
-
-        character.getCharacterDetails().setRaiderIOStats(raiderIOStats);
-        character.getCharacterDetails().setWarcraftLogsStats(warcraftLogsStats);
+    private Character constructCharacter(String characterDataInJson) {
+        Character character = CharacterMapper.mapJSONToCharacter(characterDataInJson);
+        character.getCharacterDetails().setRaiderIOStats(getRaiderIOStatsForCharacter(character));
+        character.getCharacterDetails().setWarcraftLogsStats(getWarcraftLogsStatsForCharacter(character));
         return character;
+    }
+
+    private RaiderIOStats getRaiderIOStatsForCharacter(Character character) {
+        String raiderIOResponse = raiderIoApiService.getCharacterData(character.getName(), character.getRealm());
+        return RaiderIODataMapper.mapJSONToRaiderIOStats(raiderIOResponse);
+    }
+
+    private List<WarcraftLogsStats> getWarcraftLogsStatsForCharacter(Character character) {
+        String warcraftLogsResponse = warcraftLogsApiService.getCharacterData(character.getName(), character.getRealm());
+        return WarcraftLogsDataMapper.mapJSONToWarcraftLogsStats(warcraftLogsResponse);
     }
 }
