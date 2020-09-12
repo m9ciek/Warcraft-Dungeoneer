@@ -1,11 +1,12 @@
 package com.maciek.warcraftstatstracker.service.user;
 
 import com.maciek.warcraftstatstracker.dto.UserCharacterDTO;
+import com.maciek.warcraftstatstracker.external.api.BlizzardApiService;
 import com.maciek.warcraftstatstracker.mapper.UserCharactersMapper;
 import com.maciek.warcraftstatstracker.model.Character;
+import com.maciek.warcraftstatstracker.model.User;
 import com.maciek.warcraftstatstracker.model.UserProfile;
 import com.maciek.warcraftstatstracker.model.WowAccount;
-import com.maciek.warcraftstatstracker.external.api.BlizzardApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -27,6 +28,11 @@ public class UserDataService {
     public List<UserCharacterDTO> getCharactersForActiveUser(OAuth2Authentication oAuth2Authentication) {
         ResponseEntity<String> response = blizzardApiService.getRequestBlizzardApi("https://eu.api.blizzard.com/profile/user/wow?namespace=profile-eu&locale=en_US", String.class, oAuth2Authentication);
         return UserCharactersMapper.mapJSONToUserCharacterDTOs(response.getBody());
+    }
+
+    public User getUserData(OAuth2Authentication oAuth2Authentication) {
+        ResponseEntity<User> response = blizzardApiService.getRequestBlizzardApi("https://eu.battle.net/oauth/userinfo", User.class, oAuth2Authentication);
+        return response.getBody();
     }
 
     //Returns characters with provided name from different realms - if exists
