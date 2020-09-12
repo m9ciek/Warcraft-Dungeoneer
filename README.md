@@ -8,6 +8,9 @@ It calculates score for every completed dungeon and can be used to determine whe
 * Spring Framework - Boot, Security
 * OAuth 2.0
 * Lombok
+#### Tests
+* JUnit 5
+* Mockito
 
 ### General info
 Website uses OAuth 2.0 Authorization - In order to be able to use warcraft tracker you need to have an **battle.net** account - [Blizzard Homepage](https://www.blizzard.com/)
