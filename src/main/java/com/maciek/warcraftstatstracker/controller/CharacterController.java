@@ -2,7 +2,6 @@ package com.maciek.warcraftstatstracker.controller;
 
 import com.maciek.warcraftstatstracker.model.Character;
 import com.maciek.warcraftstatstracker.service.character.CharacterService;
-import com.maciek.warcraftstatstracker.external.api.BlizzardApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -12,20 +11,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class CharacterController {
 
-    private BlizzardApiService blizzardApiService;
     private CharacterService characterService;
 
     @Autowired
-    public CharacterController(BlizzardApiService blizzardApiService, CharacterService characterService) {
-        this.blizzardApiService = blizzardApiService;
+    public CharacterController(CharacterService characterService) {
         this.characterService = characterService;
     }
 
     @GetMapping("/character/{name}")
-    public ResponseEntity<Character> getCharacter(@PathVariable String name, @RequestParam String realm, OAuth2Authentication oAuth2Authentication) {
-        blizzardApiService.authenticateOAuth2(oAuth2Authentication);
-        String blizzardApiResponse = blizzardApiService.getCharacterData(name, realm);
-        Character character = characterService.getCharacterFromApi(blizzardApiResponse);
+    public ResponseEntity<Character> getCharacterData(@PathVariable String name, @RequestParam String realm, OAuth2Authentication oAuth2Authentication) {
+        Character character = characterService.getCharacterFromApi(name, realm, oAuth2Authentication);
         return ResponseEntity.ok(character);
     }
 }

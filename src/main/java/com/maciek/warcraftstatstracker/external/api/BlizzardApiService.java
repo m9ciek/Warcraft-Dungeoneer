@@ -15,18 +15,17 @@ import org.springframework.web.client.RestTemplate;
 public class BlizzardApiService {
 
     private final Logger logger = LoggerFactory.getLogger(BlizzardApiService.class);
-    private OAuth2Authentication authentication;
 
-    public String getCharacterData(String characterName, String realm) {
+    public String getCharacterData(String characterName, String realm, OAuth2Authentication oAuth2Authentication) {
         ResponseEntity<String> blizzardApiResponse =
                 getRequestBlizzardApi("https://eu.api.blizzard.com/profile/wow/character/" + correctRealmName(realm) + "/" + characterName.toLowerCase() + "?namespace=profile-eu&locale=en_US",
-                        String.class, authentication);
+                        String.class, oAuth2Authentication);
         return blizzardApiResponse.getBody();
     }
 
-    public String getDungeonData(String characterName, String realm, int season) {
+    public String getDungeonData(String characterName, String realm, int season, OAuth2Authentication oAuth2Authentication) {
         ResponseEntity<String> response = getRequestBlizzardApi("https://eu.api.blizzard.com/profile/wow/character/" + realm + "/" + characterName + "/mythic-keystone-profile/season/" + season + "?namespace=profile-eu&locale=en_US",
-                String.class, authentication);
+                String.class, oAuth2Authentication);
 
         return response.getBody();
     }
@@ -35,10 +34,6 @@ public class BlizzardApiService {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity httpEntity = addAuthorizationHeader(oAuth2Authentication);
         return restTemplate.exchange(url, HttpMethod.GET, httpEntity, responseType);
-    }
-
-    public void authenticateOAuth2(OAuth2Authentication oAuth2Authentication) {
-        this.authentication = oAuth2Authentication;
     }
 
     private HttpEntity addAuthorizationHeader(OAuth2Authentication details) {

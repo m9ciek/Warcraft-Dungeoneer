@@ -24,8 +24,7 @@ public class DungeoneerService {
     }
 
     public DungeonData getDungeonData(String characterName, String realm, int season, OAuth2Authentication oAuth2Authentication) {
-        blizzardApiService.authenticateOAuth2(oAuth2Authentication);
-        String dungeonDataString = blizzardApiService.getDungeonData(characterName, realm, season);
+        String dungeonDataString = blizzardApiService.getDungeonData(characterName, realm, season, oAuth2Authentication);
         return constructDungeonData(dungeonDataString);
     }
 

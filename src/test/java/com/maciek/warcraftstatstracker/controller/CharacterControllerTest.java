@@ -1,7 +1,6 @@
 package com.maciek.warcraftstatstracker.controller;
 
 import com.maciek.warcraftstatstracker.exception.advice.CharacterControllerAdvice;
-import com.maciek.warcraftstatstracker.external.api.BlizzardApiService;
 import com.maciek.warcraftstatstracker.model.Character;
 import com.maciek.warcraftstatstracker.model.*;
 import com.maciek.warcraftstatstracker.service.character.CharacterService;
@@ -19,6 +18,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -29,9 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CharacterControllerTest {
 
     @Mock
-    private BlizzardApiService blizzardApiServiceMock;
-
-    @Mock
     private CharacterService characterServiceMock;
 
     private MockMvc mockMvc;
@@ -40,7 +37,7 @@ class CharacterControllerTest {
 
     @BeforeEach
     void setUp() {
-        CharacterController characterController = new CharacterController(blizzardApiServiceMock, characterServiceMock);
+        CharacterController characterController = new CharacterController(characterServiceMock);
         this.mockMvc = MockMvcBuilders.standaloneSetup(characterController)
                 .setControllerAdvice(new CharacterControllerAdvice())
                 .build();
@@ -67,15 +64,13 @@ class CharacterControllerTest {
         characterDetails.setWarcraftLogsStats(Collections.singletonList(warcraftLogsStats));
         character.setCharacterDetails(characterDetails);
 
-        given(this.blizzardApiServiceMock.getCharacterData(anyString(), anyString())).willReturn("json response placeholder");
+        given(this.characterServiceMock.getCharacterFromApi(anyString(), anyString(), any())).willReturn(this.character);
 
 
     }
 
     @Test
     void test_get_valid_character() throws Exception {
-
-        given(this.characterServiceMock.getCharacterFromApi(anyString())).willReturn(character);
         mockMvc.perform(get("/api/character/faravir").param("realm", "tarren-mill"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -89,7 +84,7 @@ class CharacterControllerTest {
 
     @Test
     void test_get_invalid_character() throws Exception {
-        given(this.blizzardApiServiceMock.getCharacterData("invalid", "invalid")).willThrow(HttpClientErrorException.class);
+        given(this.characterServiceMock.getCharacterFromApi("invalid", "invalid", null)).willThrow(HttpClientErrorException.class);
         mockMvc.perform(get("/api/character/invalid").param("realm", "invalid"))
                 .andExpect(status().isNotFound());
 
@@ -97,7 +92,6 @@ class CharacterControllerTest {
 
     @Test
     void test_get_characterDetails() throws Exception {
-        given(this.characterServiceMock.getCharacterFromApi(anyString())).willReturn(character);
         mockMvc.perform(get("/api/character/faravir").param("realm", "tarren-mill"))
                 .andExpect(jsonPath("$.character-details.level").value(120))
                 .andExpect(jsonPath("$.character-details.race").value("Orc"));
@@ -105,14 +99,12 @@ class CharacterControllerTest {
 
     @Test
     void test_get_raiderIoData() throws Exception {
-        given(this.characterServiceMock.getCharacterFromApi(anyString())).willReturn(character);
         mockMvc.perform(get("/api/character/faravir").param("realm", "tarren-mill"))
                 .andExpect(jsonPath("$.character-details.raiderIO-stats.overallScore").value(2000.0));
     }
 
     @Test
     void test_get_WarcraftLogsData() throws Exception {
-        given(this.characterServiceMock.getCharacterFromApi(anyString())).willReturn(character);
         mockMvc.perform(get("/api/character/faravir").param("realm", "tarren-mill"))
                 .andExpect(jsonPath("$.character-details.warcraft-logs-stats[0].encounterName").value("Boss"));
     }
