@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class CharacterService {
@@ -31,34 +32,47 @@ public class CharacterService {
         this.blizzardApiService = blizzardApiService;
     }
 
-    public Character getCharacterFromApi(String name, String realm, OAuth2Authentication oAuth2Authentication) {
-        String characterDataString = blizzardApiService.getCharacterData(name, realm, oAuth2Authentication);
-        Character character = constructCharacter(characterDataString);
-//        character.setRenderImageUrl(getCharacterRenderImageUrl(character, oAuth2Authentication));
-        return character;
-    }
+//    public Character getCharacterFromApi(String name, String realm, OAuth2Authentication oAuth2Authentication) {
+//        String characterDataString = blizzardApiService.getCharacterData(name, realm, oAuth2Authentication);
+//        Character character = constructCharacter(characterDataString);
+////        character.setRenderImageUrl(getCharacterRenderImageUrl(character, oAuth2Authentication));
+//        return character;
+//    }
+//
+//    public String getCharacterRenderImageUrl(Character character, OAuth2Authentication oAuth2Authentication) {
+//        String realmSlug = character.getRealm().replace(" ", "-").toLowerCase().trim();
+//        ResponseEntity<String> characterRenderResponse = blizzardApiService.getRequestBlizzardApi("https://eu.api.blizzard.com/profile/wow/character/" +
+//                realmSlug + "/" + character.getName().toLowerCase() + "/character-media?namespace=profile-eu&locale=en_GB", String.class, oAuth2Authentication);
+//        return CharacterMapper.extractCharacterRenderImageUrl(characterRenderResponse.getBody());
+//    }
+//
+//    private Character constructCharacter(String characterDataInJson) {
+//        Character character = CharacterMapper.mapJSONToCharacter(characterDataInJson);
+//        character.getCharacterDetails().setRaiderIOStats(getRaiderIOStatsForCharacter(character));
+//        character.getCharacterDetails().setWarcraftLogsStats(getWarcraftLogsStatsForCharacter(character));
+//        return character;
+//    }
 
-    public String getCharacterRenderImageUrl(Character character, OAuth2Authentication oAuth2Authentication) {
-        String realmSlug = character.getRealm().replace(" ", "-").toLowerCase().trim();
-        ResponseEntity<String> characterRenderResponse = blizzardApiService.getRequestBlizzardApi("https://eu.api.blizzard.com/profile/wow/character/" +
-                realmSlug + "/" + character.getName().toLowerCase() + "/character-media?namespace=profile-eu&locale=en_GB", String.class, oAuth2Authentication);
-        return CharacterMapper.extractCharacterRenderImageUrl(characterRenderResponse.getBody());
-    }
+//    private RaiderIOStats getRaiderIOStatsForCharacter(Character character) {
+//        String raiderIOResponse = raiderIoApiService.getCharacterData(character.getName(), character.getRealm());
+//        return RaiderIODataMapper.mapJSONToRaiderIOStats(raiderIOResponse);
+//    }
+//
+//    private List<WarcraftLogsStats> getWarcraftLogsStatsForCharacter(Character character) {
+////        String warcraftLogsResponse = warcraftLogsApiService.getCharacterData(character.getName(), character.getRealm());
+//        return WarcraftLogsDataMapper.mapJSONToWarcraftLogsStats(warcraftLogsResponse);
+//    }
 
-    private Character constructCharacter(String characterDataInJson) {
-        Character character = CharacterMapper.mapJSONToCharacter(characterDataInJson);
-        character.getCharacterDetails().setRaiderIOStats(getRaiderIOStatsForCharacter(character));
-        character.getCharacterDetails().setWarcraftLogsStats(getWarcraftLogsStatsForCharacter(character));
-        return character;
-    }
+    public Character getAsyncData(String name, String realm, OAuth2Authentication oAuth2Authentication) {
+        CompletableFuture<String> blizzCharData = blizzardApiService.getCharacterData(name, realm, oAuth2Authentication);
+        CompletableFuture<String> raiderioStats = raiderIoApiService.getCharacterData(name, realm);
+        CompletableFuture<String> warcraftLogsStats = warcraftLogsApiService.getCharacterData(name,realm);
 
-    private RaiderIOStats getRaiderIOStatsForCharacter(Character character) {
-        String raiderIOResponse = raiderIoApiService.getCharacterData(character.getName(), character.getRealm());
-        return RaiderIODataMapper.mapJSONToRaiderIOStats(raiderIOResponse);
-    }
+        CompletableFuture.allOf(blizzCharData, raiderioStats, warcraftLogsStats).join();
 
-    private List<WarcraftLogsStats> getWarcraftLogsStatsForCharacter(Character character) {
-        String warcraftLogsResponse = warcraftLogsApiService.getCharacterData(character.getName(), character.getRealm());
-        return WarcraftLogsDataMapper.mapJSONToWarcraftLogsStats(warcraftLogsResponse);
+        System.out.println(blizzCharData + "=============================================");
+        System.out.println(raiderioStats + "=============================================");
+        System.out.println(warcraftLogsStats + "=============================================");
+        return null;
     }
 }

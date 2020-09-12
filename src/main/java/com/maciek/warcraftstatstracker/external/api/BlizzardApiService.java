@@ -6,21 +6,26 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class BlizzardApiService {
 
     private final Logger logger = LoggerFactory.getLogger(BlizzardApiService.class);
 
-    public String getCharacterData(String characterName, String realm, OAuth2Authentication oAuth2Authentication) {
+    @Async
+    public CompletableFuture<String> getCharacterData(String characterName, String realm, OAuth2Authentication oAuth2Authentication) {
+        System.out.println("Blizz APi");
         ResponseEntity<String> blizzardApiResponse =
                 getRequestBlizzardApi("https://eu.api.blizzard.com/profile/wow/character/" + correctRealmName(realm) + "/" + characterName.toLowerCase() + "?namespace=profile-eu&locale=en_US",
                         String.class, oAuth2Authentication);
-        return blizzardApiResponse.getBody();
+        return CompletableFuture.completedFuture(blizzardApiResponse.getBody());
     }
 
     public String getDungeonData(String characterName, String realm, int season, OAuth2Authentication oAuth2Authentication) {

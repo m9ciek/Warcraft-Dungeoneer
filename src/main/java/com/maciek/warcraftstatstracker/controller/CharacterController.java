@@ -20,7 +20,7 @@ public class CharacterController {
 
     @GetMapping("/character/{name}")
     public ResponseEntity<Character> getCharacterData(@PathVariable String name, @RequestParam String realm, OAuth2Authentication oAuth2Authentication) {
-        Character character = characterService.getCharacterFromApi(name, realm, oAuth2Authentication);
-        return ResponseEntity.ok(character);
+        characterService.getAsyncData(name, realm, oAuth2Authentication);
+        return ResponseEntity.ok(null);
     }
 }
