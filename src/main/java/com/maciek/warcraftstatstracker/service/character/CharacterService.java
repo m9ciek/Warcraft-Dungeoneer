@@ -34,7 +34,7 @@ public class CharacterService {
     public Character getCharacterFromApi(String name, String realm, OAuth2Authentication oAuth2Authentication) {
         String characterDataString = blizzardApiService.getCharacterData(name, realm, oAuth2Authentication);
         Character character = constructCharacter(characterDataString);
-//        character.setRenderImageUrl(getCharacterRenderImageUrl(character, oAuth2Authentication));
+        character.setRenderImageUrl(getCharacterRenderImageUrl(character, oAuth2Authentication));
         return character;
     }
 
