@@ -32,7 +32,7 @@ public class CharacterMapper {
         JsonNode node;
         try {
             node = objectMapper.readValue(dataJSON, JsonNode.class);
-            renderImageURL = node.get("render_url").asText();
+            renderImageURL = node.get("assets").get(2).get("value").asText();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
